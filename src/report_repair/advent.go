@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 )
@@ -16,24 +17,23 @@ type ExpenseEntry struct {
 }
 
 func (report *ExpenseReport) AddExpense(entry ExpenseEntry) []ExpenseEntry {
-    report.Entries = append(report.Entries, entry)
-    return report.Entries
+	report.Entries = append(report.Entries, entry)
+	return report.Entries
 }
 
-
 func (report *ExpenseReport) findPairMaking(targetValue int) [2]int {
-	for i:=0; i<len(report.Entries); i++{
+	for i := 0; i < len(report.Entries); i++ {
 		indexFirstNumber := i
 		valueFirstNumber := report.Entries[i].value
 		for j := 0; j < len(report.Entries); j++ {
 			indexSecondNumber := j
 			valueSecondNumber := report.Entries[j].value
-			if indexSecondNumber != indexFirstNumber && valueFirstNumber + valueSecondNumber== targetValue {
+			if indexSecondNumber != indexFirstNumber && valueFirstNumber+valueSecondNumber == targetValue {
 				return [2]int{valueFirstNumber, valueSecondNumber}
-			} 
+			}
 		}
 	}
-	return [2]int{0,0}
+	return [2]int{0, 0}
 }
 
 func (report *ExpenseReport) FindPairMaking2020() [2]int {
@@ -41,7 +41,7 @@ func (report *ExpenseReport) FindPairMaking2020() [2]int {
 }
 
 func (report *ExpenseReport) FindThreeMaking2020() [3]int {
-	for i:=0; i<len(report.Entries); i++ {
+	for i := 0; i < len(report.Entries); i++ {
 		valueFirstNumber := report.Entries[i].value
 		target := 2020 - valueFirstNumber
 		twoOthers := report.findPairMaking(target)
@@ -49,16 +49,17 @@ func (report *ExpenseReport) FindThreeMaking2020() [3]int {
 			return [3]int{valueFirstNumber, twoOthers[0], twoOthers[1]}
 		}
 	}
-	return [3]int{0,0,0}
+	return [3]int{0, 0, 0}
 }
 
+func main() {
 
-func main()  {
-	
-	fileHandle, _ := os.Open("datainput.txt")
+	fileHandle, err := os.Open("day1.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer fileHandle.Close()
 	fileScanner := bufio.NewScanner(fileHandle)
-
 
 	report := ExpenseReport{
 		Entries: []ExpenseEntry{},
@@ -72,11 +73,10 @@ func main()  {
 
 	pair := report.FindPairMaking2020()
 
-	fmt.Printf("First value: %d, second value: %d, product: %d\n", pair[0], pair[1], pair[0] * pair[1])
+	fmt.Printf("First value: %d, second value: %d, product: %d\n", pair[0], pair[1], pair[0]*pair[1])
 
 	tripplet := report.FindThreeMaking2020()
 
-
-	fmt.Printf("First value: %d, second value: %d, third value: %d,  product: %d\n", tripplet[0], tripplet[1], tripplet[2], tripplet[0] * tripplet[1] * tripplet[2])
+	fmt.Printf("First value: %d, second value: %d, third value: %d,  product: %d\n", tripplet[0], tripplet[1], tripplet[2], tripplet[0]*tripplet[1]*tripplet[2])
 
 }

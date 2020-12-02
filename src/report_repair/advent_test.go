@@ -2,7 +2,6 @@ package main
 
 import "testing"
 
-
 func InitExpenseReport() ExpenseReport {
 	report := ExpenseReport{
 		Entries: []ExpenseEntry{},
@@ -21,20 +20,20 @@ func TestFindPairMaking2020(t *testing.T) {
 
 	report := InitExpenseReport()
 
-	want := [2]int{1721,299}
+	want := [2]int{1721, 299}
 	got := report.FindPairMaking2020()
-    if got != want {
-       t.Errorf("got: %d, instead of: %d.", got, want)
-    }
+	if got != want {
+		t.Errorf("got: %d, instead of: %d.", got, want)
+	}
 }
 
 func TestFindThreeMaking2020(t *testing.T) {
 
 	report := InitExpenseReport()
 
-	want := [3]int{979,366,675}
+	want := [3]int{979, 366, 675}
 	got := report.FindThreeMaking2020()
-    if got != want {
-       t.Errorf("got: %d, instead of: %d.", got, want)
-    }
+	if got != want {
+		t.Errorf("got: %d, instead of: %d.", got, want)
+	}
 }
