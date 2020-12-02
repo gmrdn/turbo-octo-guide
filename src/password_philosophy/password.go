@@ -20,8 +20,16 @@ type PasswordEntry struct {
 }
 
 func (pwd *PasswordEntry) IsValid() bool {
-	nb := strings.Count(pwd.password, pwd.letter)
-	if nb >= pwd.minimum && nb <= pwd.maximum {
+	letterAtFirstIndex := string(pwd.password[pwd.minimum-1])
+	letterAtSecondIndex := string(pwd.password[pwd.maximum-1])
+	nbContain := 0
+	if letterAtFirstIndex == pwd.letter {
+		nbContain++
+	}
+	if letterAtSecondIndex == pwd.letter {
+		nbContain++
+	}
+	if nbContain == 1 {
 		return true
 	}
 	return false

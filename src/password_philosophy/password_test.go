@@ -14,7 +14,7 @@ func PrepareList() PasswordList {
 
 func TestGetNbValid(t *testing.T) {
 	list := PrepareList()
-	want := 2
+	want := 1
 	got := list.GetNbValid()
 	if got != want {
 		t.Errorf("got: %d, instead of: %d.", got, want)
@@ -41,6 +41,20 @@ func TestIsNotValid(t *testing.T) {
 		maximum:  3,
 		letter:   "b",
 		password: "cdefg",
+	}
+	want := false
+	got := password.IsValid()
+	if got != want {
+		t.Errorf("got: %t, instead of: %t.", got, want)
+	}
+}
+
+func TestIsNotValidEither(t *testing.T) {
+	password := PasswordEntry{
+		minimum:  2,
+		maximum:  9,
+		letter:   "c",
+		password: "ccccccccc",
 	}
 	want := false
 	got := password.IsValid()
