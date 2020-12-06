@@ -30,7 +30,7 @@ func InitPasses() BoardingPasses {
 func TestCalculateSeatID(t *testing.T) {
 	p := Plane{127, 7}
 	b := InitPasses()
-	b.Seats[0].CalcAndUpdateID(p)
+	b.Seats[0].CalcAndLocateSeat(p)
 
 	want := 357
 	got := b.Seats[0].SeatID
@@ -38,3 +38,31 @@ func TestCalculateSeatID(t *testing.T) {
 		t.Errorf("got: %d, instead of: %d.", got, want)
 	}
 }
+
+func TestFindEmptySeats(t *testing.T) {
+	p := Plane{2, 0}
+	b := BoardingPasses{
+		Seats: []Seat{}}
+
+	b.AddSeat(Seat{
+		Specification: "FFL",
+	})
+	b.AddSeat(Seat{
+		Specification: "BL",
+	})
+
+	b.Seats[0].CalcAndLocateSeat(p)
+	b.Seats[1].CalcAndLocateSeat(p)
+
+	want := []Seat{Seat{
+		Specification: "",
+		Row: 1,
+		Col: 0,
+	}}
+	got := p.FindEmptySeats(b)
+	if got[0].Row != want[0].Row {
+		t.Errorf("got: %d, instead of: %d.", got[0].Row, want[0].Row)
+	}
+
+}
+

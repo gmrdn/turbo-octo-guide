@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 type BoardingPasses struct {
@@ -17,10 +18,12 @@ func (b *BoardingPasses) AddSeat(s Seat) []Seat {
 }
 type Seat struct {
 	Specification string
+	Row int
+	Col	int
 	SeatID	int
 }
 
-func (s *Seat) CalcAndUpdateID(p Plane) {
+func (s *Seat) CalcAndLocateSeat(p Plane) {
 	startingRow := 0
 	endingRow := p.Rows
 	startingCol := 0
@@ -42,7 +45,8 @@ func (s *Seat) CalcAndUpdateID(p Plane) {
 			endingCol = middleCol
 		}
 	}
-	
+	s.Row = endingRow
+	s.Col = endingCol
 	s.SeatID = endingRow * 8 + endingCol
 }
 
@@ -52,6 +56,29 @@ type Plane struct {
 	Columns int
 }
 
+func (p *Plane) FindEmptySeats(b BoardingPasses) []Seat {
+	
+	emptySeats := []Seat{}
+	for i:=0; i<= p.Rows; i++ {
+		for j:=0; j <= p.Columns; j++ {
+			found := false
+			for _, s := range b.Seats {
+				if s.Row == i && s.Col == j {
+					found = true
+				}
+			}
+			if found == false {
+				emptySeats = append(emptySeats, Seat{
+					Specification: "",
+					SeatID: i * 8 + j,
+					Row: i,
+					Col: j,
+				})
+			}
+		}
+	}
+	return emptySeats
+}
 
 func main() {
 	fmt.Printf("hello")
@@ -67,25 +94,40 @@ func main() {
 
 	fileScanner := bufio.NewScanner(fileHandle)
 
-	bp := BoardingPasses{
+	b := BoardingPasses{
 		 Seats: []Seat{},
 	}
 
 	for fileScanner.Scan() {
 		s := fileScanner.Text()
-		bp.AddSeat(Seat{
+		b.AddSeat(Seat{
 			Specification: s,
 			SeatID: 0,
 		})
 	}
+    start := time.Now()
 
-	for i:= 0; i<len(bp.Seats);i++{
-		bp.Seats[i].CalcAndUpdateID(p)
-		if bp.Seats[i].SeatID > maxSeat {
-			maxSeat = bp.Seats[i].SeatID
+	for i:= 0; i<len(b.Seats);i++{
+		b.Seats[i].CalcAndLocateSeat(p)
+		fmt.Printf("Seat ID: %d\n", b.Seats[i].SeatID)
+
+		if b.Seats[i].SeatID > maxSeat {
+			maxSeat = b.Seats[i].SeatID
 		}
 	}
 
 	fmt.Printf("Max Seat ID: %d\n", maxSeat)
+
+	elapsed := time.Since(start)
+	log.Printf("Binomial took %s", elapsed)
+	
+	emptySeats := p.FindEmptySeats(b)
+	for i:= 0; i< len(emptySeats); i++ {
+		fmt.Printf("Empty Seat Row: %d, Col: %d, SeatID: %d\n", emptySeats[i].Row,emptySeats[i].Col,emptySeats[i].SeatID)
+
+	}
+
+	elapsed = time.Since(start)
+    log.Printf("Binomial took %s", elapsed)
 
 }
