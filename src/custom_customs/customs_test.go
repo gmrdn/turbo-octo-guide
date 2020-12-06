@@ -64,7 +64,7 @@ func InitGroups() CustomsGroups {
 
 func TestGroups(t *testing.T) {
 	c := InitGroups()
-	want := 11
+	want := 6
 	got := c.GetSum()
 	if got != want {
 		t.Errorf("got: %d, instead of: %d ", got, want)

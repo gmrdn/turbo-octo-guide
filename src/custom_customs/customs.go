@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type CustomsGroups struct {
@@ -14,7 +15,7 @@ type CustomsGroups struct {
 func (c CustomsGroups) GetSum() int {
 	sum := 0
 	for _, g := range c.Groups {
-		sum += g.GetNbUniqueAnswer()
+		sum += g.GetNbAllAnswered()
 	}
 	return sum
 }
@@ -41,6 +42,30 @@ func (g *Group) GetNbUniqueAnswer() int {
 	}
 	return len(set)
 }
+
+func (g *Group) GetNbAllAnswered() int {
+	set := make(map[rune]struct{})
+	
+	// first answer
+	for _, r := range g.Answers[0].questions {
+		if _, ok := set[r]; ok {
+		} else {
+			set[r] = struct{}{}
+		}
+	} 
+	// set a b c
+	for _, a := range g.Answers { // abc, ac, ad
+		for r := range set {
+			if strings.ContainsRune(a.questions, r) {
+
+			} else {
+				delete(set, r)
+			}
+		}
+	}
+	return len(set)
+}
+
 
 func (g *Group) AddAnswers(a Answer) []Answer {
 	g.Answers = append(g.Answers, a)
