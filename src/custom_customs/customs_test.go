@@ -1,4 +1,4 @@
-package customs
+package main
 
 import "testing"
 
