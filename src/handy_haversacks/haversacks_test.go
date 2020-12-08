@@ -14,10 +14,10 @@ import "testing"
 
 func InitRules() Rules {
 	r := Rules{
-		Rule: make(map[string][]Capacity),
+		Rule: make(map[string][]Rule),
 	}
 
-	r.Rule["light red"] = []Capacity{
+	r.Rule["light red"] = []Rule{
 		{
 			Color:  "bright white",
 			Number: 1,
@@ -27,7 +27,7 @@ func InitRules() Rules {
 			Number: 2,
 		},
 	}
-	r.Rule["dark orange"] = []Capacity{
+	r.Rule["dark orange"] = []Rule{
 		{
 			Color:  "bright white",
 			Number: 3,
@@ -37,14 +37,14 @@ func InitRules() Rules {
 			Number: 4,
 		}}
 
-	r.Rule["bright white"] = []Capacity{
+	r.Rule["bright white"] = []Rule{
 		{
 			Color:  "shiny gold",
 			Number: 1,
 		},
 	}
 
-	r.Rule["muted yellow"] = []Capacity{
+	r.Rule["muted yellow"] = []Rule{
 		{
 			Color:  "shiny gold",
 			Number: 2,
@@ -54,7 +54,7 @@ func InitRules() Rules {
 			Number: 9,
 		},
 	}
-	r.Rule["shiny gold"] = []Capacity{
+	r.Rule["shiny gold"] = []Rule{
 		{
 			Color:  "dark olive",
 			Number: 1,
@@ -64,7 +64,7 @@ func InitRules() Rules {
 			Number: 2,
 		},
 	}
-	r.Rule["dark olive"] = []Capacity{
+	r.Rule["dark olive"] = []Rule{
 		{
 			Color:  "faded blue",
 			Number: 3,
@@ -75,7 +75,7 @@ func InitRules() Rules {
 		},
 	}
 
-	r.Rule["vibrant plum"] = []Capacity{
+	r.Rule["vibrant plum"] = []Rule{
 		{
 			Color:  "faded blue",
 			Number: 5,
@@ -85,8 +85,8 @@ func InitRules() Rules {
 			Number: 6,
 		},
 	}
-	r.Rule["faded blue"] = []Capacity{}
-	r.Rule["dotted black"] = []Capacity{}
+	r.Rule["faded blue"] = []Rule{}
+	r.Rule["dotted black"] = []Rule{}
 	return r
 }
 
